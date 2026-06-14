@@ -1,398 +1,1076 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="David Gunza portfólio" />
-    <meta name="description" content="Bem vindo ao meu portfolio" />
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link id='favicon' rel="shortcut icon" href="./assets/images/favicson.png" type="image/x-png">
-    <title>Portfolio | David Gunza</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>David Gunza – Fullstack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #07080F;
+      --bg2: #0D0F1A;
+      --bg3: #111422;
+      --blue: #4F8EF7;
+      --cyan: #00D4FF;
+      --purple: #7C5CFC;
+      --text: #E8EAED;
+      --muted: #6B7280;
+      --border: rgba(79,142,247,0.15);
+      --card: rgba(13,15,26,0.8);
+      --glow: rgba(79,142,247,0.25);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── CANVAS ── */
+    #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(7,8,15,0.85);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--cyan);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--blue); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); font-size: 0.88rem; text-decoration: none;
+      font-weight: 500; letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-cta {
+      background: var(--blue); color: #fff;
+      border: none; padding: 8px 18px; border-radius: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--cyan); box-shadow: 0 0 20px rgba(0,212,255,0.4); }
+
+    /* ── SECTIONS BASE ── */
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 5%; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--cyan); letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700; line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+    .section-title span { color: var(--blue); }
+    .section-desc { color: var(--muted); max-width: 560px; font-size: 1rem; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 64px;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+      padding: 6rem 0 4rem;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(79,142,247,0.1);
+      border: 1px solid rgba(79,142,247,0.3);
+      border-radius: 100px; padding: 5px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; color: var(--blue);
+      margin-bottom: 1.4rem;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .hero-name {
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 700; line-height: 1.05;
+      letter-spacing: -0.04em; margin-bottom: 0.4rem;
+    }
+    .hero-name .accent { 
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem; color: var(--muted);
+      margin-bottom: 1.4rem;
+    }
+    .hero-role .typed-text { color: var(--cyan); }
+    .hero-desc {
+      color: var(--muted); font-size: 1rem;
+      line-height: 1.7; max-width: 500px;
+      margin-bottom: 2rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: #fff; padding: 12px 24px; border-radius: 8px;
+      font-weight: 600; font-size: 0.9rem; text-decoration: none;
+      border: none; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(79,142,247,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(79,142,247,0.5); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--text);
+      padding: 11px 22px; border-radius: 8px;
+      font-weight: 600; font-size: 0.9rem; text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+    .hero-socials { display: flex; gap: 1rem; margin-top: 2rem; }
+    .social-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 1rem; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .social-icon:hover { background: rgba(79,142,247,0.15); border-color: var(--blue); color: var(--blue); }
+
+    /* HERO PHOTO */
+    .hero-photo-wrap {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .hero-photo-ring {
+      position: relative; width: 300px; height: 300px;
+    }
+    .hero-photo-ring::before {
+      content: '';
+      position: absolute; inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(0deg, var(--blue), var(--cyan), var(--purple));
+      animation: spin 6s linear infinite;
+      z-index: 0;
+    }
+    @keyframes spin { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+    .hero-photo-inner {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%; border-radius: 50%;
+      overflow: hidden; background: var(--bg3);
+      display: flex; align-items: center; justify-content: center;
+      border: 3px solid var(--bg);
+    }
+    .hero-photo-inner img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .photo-placeholder {
+      font-size: 5rem; color: var(--blue); opacity: 0.5;
+    }
+    .hero-photo-badge {
+      position: absolute; bottom: 10px; right: 10px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 8px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--cyan);
+      white-space: nowrap; z-index: 2;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; margin-top: 3rem;
+    }
+    .stat-item {
+      background: var(--bg2); padding: 1.4rem 2rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 1.8rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── ABOUT ── */
+    #about { padding: 6rem 0; }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center; margin-top: 3rem;
+    }
+    .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; font-size: 0.98rem; }
+    .about-highlights {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .highlight-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.2rem 1.4rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .highlight-card:hover { border-color: var(--blue); box-shadow: 0 0 20px var(--glow); }
+    .highlight-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(79,142,247,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--blue); font-size: 1rem; flex-shrink: 0;
+    }
+    .highlight-info h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+    .highlight-info p { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── SKILLS ── */
+    #skills { padding: 6rem 0; background: linear-gradient(180deg, transparent, rgba(13,15,26,0.5) 30%, rgba(13,15,26,0.5) 70%, transparent); }
+    .skills-header { margin-bottom: 3rem; }
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.8rem;
+    }
+    .skill-pill {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.75rem 1rem;
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.82rem; font-weight: 500;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s; cursor: default;
+    }
+    .skill-pill:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 4px 15px var(--glow); }
+    .skill-pill .sk-icon { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; display: block; }
+    .skill-categories { display: flex; flex-direction: column; gap: 2.5rem; }
+    .skill-category h3 {
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--cyan); letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 1rem; padding-left: 2px;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { padding: 6rem 0; }
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .project-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .project-card:hover { border-color: var(--blue); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--glow); }
+    .project-header {
+      padding: 1.4rem 1.4rem 0;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .project-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .project-links { display: flex; gap: 0.5rem; }
+    .project-link {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); text-decoration: none; font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .project-link:hover { border-color: var(--blue); color: var(--blue); }
+    .project-body { padding: 1rem 1.4rem 1.4rem; flex: 1; display: flex; flex-direction: column; }
+    .project-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; flex: 1; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; color: var(--blue);
+      background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.2);
+      padding: 2px 8px; border-radius: 4px;
+    }
+
+    /* ── EDUCATION ── */
+    #education { padding: 6rem 0; }
+    .edu-timeline { margin-top: 3rem; display: flex; flex-direction: column; gap: 1.5rem; position: relative; }
+    .edu-timeline::before {
+      content: '';
+      position: absolute; left: 20px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(180deg, var(--blue), var(--purple), transparent);
+    }
+    .edu-item {
+      display: flex; gap: 2rem; padding-left: 3.5rem; position: relative;
+    }
+    .edu-dot {
+      position: absolute; left: 13px; top: 6px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--blue); border: 2px solid var(--bg);
+      box-shadow: 0 0 10px var(--blue);
+    }
+    .edu-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.4rem; flex: 1;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.2s;
+    }
+    .edu-card:hover { border-color: var(--blue); }
+    .edu-period {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--cyan); margin-bottom: 0.4rem;
+    }
+    .edu-institution { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .edu-course { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── GOALS ── */
+    #goals { padding: 6rem 0; }
+    .goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+    .goals-col h3 {
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--cyan); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .goal-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .goal-item {
+      display: flex; align-items: center; gap: 0.8rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.8rem 1rem;
+      font-size: 0.88rem; backdrop-filter: blur(10px);
+      transition: border-color 0.2s;
+    }
+    .goal-item:hover { border-color: var(--border); }
+    .goal-check {
+      width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+    }
+    .goal-check.done { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+    .goal-check.todo { background: rgba(107,114,128,0.1); color: var(--muted); border: 1px solid var(--border); }
+    .goal-text.done { text-decoration: line-through; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { padding: 6rem 0 8rem; }
+    .contact-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; margin-top: 3rem;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-card {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.2rem;
+      text-decoration: none; color: inherit;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+    }
+    .contact-card:hover { border-color: var(--blue); transform: translateX(4px); }
+    .contact-card-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--blue); font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-card-info label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .contact-card-info p { font-size: 0.88rem; font-weight: 500; }
+    .contact-cta-box {
+      background: linear-gradient(135deg, rgba(79,142,247,0.1), rgba(124,92,252,0.1));
+      border: 1px solid rgba(79,142,247,0.25);
+      border-radius: 14px; padding: 2rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .contact-cta-box h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .contact-cta-box p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.6rem; line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative; z-index: 1;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.8rem; color: var(--muted); }
+    .footer-mono { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── MOBILE ── */
+    @media(max-width:768px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-photo-wrap { order: -1; }
+      .hero-photo-ring { width: 200px; height: 200px; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .hero-actions { justify-content: center; }
+      .hero-socials { justify-content: center; }
+      .about-grid, .contact-inner, .goals-grid { grid-template-columns: 1fr; }
+      .stats-strip { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
 </head>
-<body oncontextmenu="return false">
+<body>
 
-<header>
-        <a href="/" class="logo"><i class="fab fa-node-js"></i> GunzaLab</a>
+<canvas id="canvas-bg"></canvas>
 
-        <div id="menu" class="fas fa-bars"></div>
-        <nav class="navbar">
-            <ul>
-            <li><a class="active" href="#home">Principal</a></li>
-            <li><a href="#about">Sobre</a></li>
-            <li><a href="#skills">Habilidades</a></li>
-            <li><a href="#education">Educação</a></li>
-            <li><a href="#work">Trabalho</a></li>
-            <li><a href="#experience">Experiência</a></li>
-            <li><a href="#contact">Contacto</a></li>
-            </ul>
-        </nav>
-</header>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">&lt;<span>david</span>.gunza/&gt;</div>
+  <ul class="nav-links">
+    <li><a href="#about">Sobre</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projetos</a></li>
+    <li><a href="#education">Educação</a></li>
+    <li><a href="#goals">Metas</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <a class="nav-cta" href="#cv-download" id="nav-cv">
+    <i class="fas fa-download" style="font-size:0.8rem;"></i> Download CV
+  </a>
+</nav>
 
-<section class="home" id="home">
-    <div id="particles-js"></div>
-
-    <div class="content">
-    <h2><br/> Meu nome é David<span> Gunza</span></h2>
-    <p>Gosto de <span class="typing-text"></span></p>
-    <a href="#about" class="btn"><span>Sobre Mim</span>
-      <i class="fas fa-arrow-circle-down"></i>
-    </a>
-
-    <div class="socials">
-        <ul class="social-icons">
-          <li><a class="linkedin" aria-label="LinkedIn" href="https://www.linkedin.com/in/david-gunza-650734295/" target="_blank"><i class="fab fa-linkedin"></i></a></li> 
-          <li><a class="github" aria-label="GitHub" href="https://github.com/davidgunza05" target="_blank"><i class="fab fa-github"></i></a></li>
-          <li><a class="instagram" aria-label="Instagram" href="https://www.instagram.com/davidgunza11"><i class="fab fa-instagram" target="_blank"></i></a></li>
-          <li><a class="instagram" aria-label="Email" href="mailto:davidgunza05@gmail.com"><i class="fas fa-envelope" target="_blank"></i></a></li>
-        </ul>
-      </div>
-    </div>
-<div class="image">
-    <img draggable="false" class="tilt" src="./assets/images/hero.png" alt="">
-</div>
-</section>
-
-<section class="about" id="about">
-    <h2 class="heading"><i class="fas fa-user-alt"></i> Sobre <span>Mim</span></h2>
-    
-    <div class="row">
-
-    <div class="image">
-        <img draggable="false" class="tilt" src="./assets/images/profile2.jpg" alt="">
-    </div>
-    <div class="content">
-        <h3>Sou o David</h3>
-        <span class="tag">Full Stack Developer</span>
-        
-        <p style="text-align: justify;">
-          Sou o David Gunza um jovem desenvolvedor fullstack com uma trajetória impressionante. Após concluir o ensino médio em Informática no Instituto de Telecomunicações, ingressei na Universidade para estudar Engenharia Informática e frequentando atualmente.
-          Minha paixão pela tecnologia me impulsionou a dominar uma ampla gama de habilidades, desde o desenvolvimento front-end até o back-end de aplicações web. 
-          <br>
-          <br>
-          Com uma ética de trabalho exemplar e uma mente criativa para resolver problemas, me destacando em qualquer projeto que assumo.
-          Fora do mundo da programação, sou um entusiasta da música e dos esportes ao ar livre. Essas atividades complementam minha vida agitada e alimentam minha criatividade.
-          Com um futuro promissor pela frente, continuarei deixando marca no mundo da tecnologia com a minha determinação e habilidades excepcionais.</p>
-        
-        <div class="box-container">
-            <div class="box">
-              <p><span> Email : </span> davidgunza5@gmail.com</p>
-              <p><span> Local : </span> Luanda, Angola</p>
-            </div>
-        </div>
-        
-        <div class="resumebtn">
-            <a href="https://drive.google.com/file/d/1i7K736LMoYHkIu_t1uJnnN83Za3N9j-C/view?usp=drive_link" target="_blank" class="btn"><span>Meu Currículo</span>
-                <i class="fas fa-chevron-right"></i>
-            </a>
-        </div>
-
-    </div>
-    </div>
-</section>
-
-<section class="skills" id="skills">
-
-    <h2 class="heading"><i class="fas fa-laptop-code"></i> Habilidades</span></h2>
-
-    <div class="container">
-          <div class="row" id="skillsContainer">
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/javascript--v1.png"/>
-                <span>javascript</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/fluency/48/000000/node-js.png"/>
-                <span>Node.js</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/external-tal-revivo-color-tal-revivo/48/000000/external-react-a-javascript-library-for-building-user-interfaces-logo-color-tal-revivo.png"/>
-                <span>React.js</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/html-5--v1.png"/>
-                <span>HTML 5</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/css3.png"/>
-                <span>CSS 3</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/bootstrap.png"/>
-                <span>Bootstrap</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/material-ui.png"/>
-                <span>MaterialUI</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/mongodb.png"/>
-                <span>MongoDB</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/mysql-logo.png"/>
-                <span>MySQL</span>
-              </div>
-            </div>
-            
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/redux.png"/>
-                <span>Redux</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/color/48/000000/git.png"/>
-                <span>Git</span>
-              </div>
-            </div>
-
-            <div class="bar">
-              <div class="info">
-                <img src="https://img.icons8.com/glyph-neue/48/ffffff/github.png"/>
-                <span>Github</span>
-              </div>
-            </div>
-      </div>
-</div>
-</section>
-
-<section class="education" id="education">
-
-  <h1 class="heading"><i class="fas fa-graduation-cap"></i> Minha <span>Educação</span></h1>
-
-    <p class="qoute">A Educação Não É A Aprendizagem De Factos, Mas O Treino Da Mente Para Pensar.</p>
-
-    <div class="box-container">
-
-    <div class="box">
-        <div class="image">
-        <img draggable="false" src="./assets/images/educat/college.jpg" alt="">
-        </div>
-        <div class="content">
-        <h3>Ensino Médio em informática</h3>
-        <p>Instituto de Telecomunicações | ITEL</p>
-        <h4>2019-2023</h4>
-        </div>
-    </div>
-
-    <div class="box">
-      <div class="image">
-      <img draggable="false" src="./assets/images/educat/school.jpg" alt="">
-      </div>
-      <div class="content">
-      <h3>Cursando Engenharia Informática</h3>
-      <p>Universidade Metodista de Angola | UMA</p>
-      <h4>2023-atual</h4>
-      </div>
-    </div>
-
-</div>
-</section>
-
-
-<section class="work" id="work">
-
-  <h2 class="heading"><i class="fas fa-laptop-code"></i> Projetos<span> Concluídos</span></h2>
-
-  <div class="box-container">
-
-    <div class="box tilt" data-sr-id="44" style="visibility: visible; opacity: 1; transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1); will-change: transform;">
-      <img draggable="false" src="assets/images/projects/farmacia.png" alt="project">
-      <div class="content">
-        <div class="tag">
-        <h3>Express Farma</h3>
-        </div>
-        <div class="desc">
-          <p>Ecomerce farmacêutico 100% funcional. Funciona como uma farmácia online pare venda compra de medicamentos.</p>
-          <div class="btns">
-            <a href="https://github.com/davidgunza05/express-Farma-ecommerce" class="btn" target="_blank"><i class="fas fa-eye"></i> Ver</a>
-            <a href="https://github.com/davidgunza05/express-Farma-ecommerce" class="btn" target="_blank">Códgio <i class="fas fa-code"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="box tilt" data-sr-id="44" style="visibility: visible; opacity: 1; transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1); will-change: transform;">
-      <img draggable="false" src="assets/images/projects/flipkartphp.png" alt="project">
-      <div class="content">
-        <div class="tag">
-        <h3>MarketAo</h3>
-        </div>
-        <div class="desc">
-          <p>O MarketAo é um MarketPlace a fase de desenvolvimento, capaz de apresentar as principais funcionalidades de um marketplace funcional.</p>
-          <div class="btns">
-            <a href="https://github.com/davidgunza05/MarketAo" class="btn" target="_blank"><i class="fas fa-eye"></i> Ver</a>
-            <a href="https://github.com/davidgunza05/MarketAo" class="btn" target="_blank">Códgio <i class="fas fa-code"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="box tilt" data-sr-id="44" style="visibility: visible; opacity: 1; transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1); will-change: transform;">
-      <img draggable="false" src="assets/images/projects/portfolio.png" alt="project">
-      <div class="content">
-        <div class="tag">
-        <h3>Portfólio Pessoal</h3>
-        </div>
-        <div class="desc">
-          <p>Portfólio pessoal desenvolvido para que as pessoas pudessem acessar e ver as minhas habilidades, projetos ou manter contacto comigo.</p>
-          <div class="btns">
-            <a href="https://github.com/davidgunza05/MarketAo" class="btn" target="_blank"><i class="fas fa-eye"></i> Ver</a>
-            <a href="https://github.com/davidgunza05/MarketAo" class="btn" target="_blank">Códgio <i class="fas fa-code"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-</div>
-
-<div class="viewall">
-  <a href="https://github.com/davidgunza05" class="btn" target="_blank"><span>Ver mais projetos</span>
-    <i class="fas fa-arrow-right"></i>
-</a>
-</div>
-
-</section>
-
-<section class="experience" id="experience">
-
-  <h2 class="heading"><i class="fas fa-briefcase"></i> Experiência </h2>
-
-  <div class="timeline">
-
-    <div class="container right">
-      <div class="content">
-        <div class="tag">
-          <h2>Trabalhando Por Conta Própria</h2>
-        </div>
-        <div class="desc">
-            <h3>Desenvolvedor Full Stack</h3>
-            <p>Out 2022 - presente</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="container left">
-      <div class="content">
-        <div class="tag">
-          <h2>Instituto de Telecomunicações</h2>
-        </div>
-        <div class="desc">
-            <h3>Desenvolvedor Web | Estágio</h3>
-            <p>Nov 2022 - Mai 2023</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="container right">
-      <div class="content">
-        <div class="tag">
-          <h2>Trabalhando Por Conta Própria</h2>
-        </div>
-        <div class="desc">
-            <h3>Técnino de TI</h3>
-            <p>Nov 2022 - Presente</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  </div>
-
-</div>
-
-</section>
-
-<section class="contact" id="contact">
-  
-  <h2 class="heading"><i class="fas fa-headset"></i> Contacto</h2>
-
+<!-- HERO -->
+<section id="hero">
   <div class="container">
-    <div class="content">
-      <div class="image-box">
-        <img draggable="false" src="./assets/images/contact1.png" alt="">
+    <div class="hero-inner">
+      <div class="hero-content reveal">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Disponível para novos projetos
+        </div>
+        <h1 class="hero-name">Olá, sou<br><span class="accent">David Gunza</span></h1>
+        <p class="hero-role">// <span class="typed-text" id="typed"></span><span style="color:var(--blue)">|</span></p>
+        <p class="hero-desc">
+          Desenvolvedor Fullstack apaixonado por construir experiências digitais robustas e escaláveis — do backend ao mobile, com código limpo e arquitetura que escala.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary">
+            <i class="fas fa-code"></i> Ver Projetos
+          </a>
+          <a href="#cv-download" class="btn-secondary" id="cv-btn">
+            <i class="fas fa-file-arrow-down"></i> Baixar CV
+          </a>
+        </div>
+        <div class="hero-socials">
+          <a href="https://github.com/davidgunza05" class="social-icon" target="_blank" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://linkedin.com/in/david-gunza" class="social-icon" target="_blank" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://wa.me/244944067925" class="social-icon" target="_blank" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="mailto:davidgunza5@gmail.com" class="social-icon" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+          <a href="https://facebook.com" class="social-icon" target="_blank" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
       </div>
-    <form id="contact-form">
-      
-      <div class="form-group">
-        <div class="field">
-          <input type="text" name="name" placeholder="Nome" required>
-          <i class='fas fa-user'></i>
+
+      <div class="hero-photo-wrap reveal" style="transition-delay:0.15s">
+        <div class="hero-photo-ring">
+          <div class="hero-photo-inner">
+            <!-- Substitui o src abaixo pela URL da tua foto -->
+            <div class="photo-placeholder">
+              <img src="./assets/profile.png" alt="">
+            </div>
+          </div>
+          <div class="hero-photo-badge">📍 Luanda, Angola</div>
         </div>
-        <div class="field">
-          <input type="text" name="email" placeholder="Email" required>
-          <i class='fas fa-envelope'></i>
-        </div>
-        <div class="field">
-          <input type="text" name="phone" placeholder="Telefone">
-          <i class='fas fa-phone-alt'></i>
-        </div>
-        <div class="message">
-        <textarea name="message" placeholder="Mensagem" required></textarea>
-        <i class="fas fa-comment-dots"></i>
-        </div>
-        </div>
-      <div class="button-area">
-        <button type="submit">
-          Enviar <i class="fa fa-paper-plane"></i></button>
       </div>
-    </form>
-  </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-strip reveal" style="transition-delay:0.3s">
+      <div class="stat-item">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Projetos Concluídos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Anos de Experiência</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Tecnologias Dominadas</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="footer">
-
-  <div class="box-container">
-
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="section-label">// sobre mim</p>
+    <h2 class="section-title">Quem sou <span>eu</span></h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          Sou um Desenvolvedor Fullstack Web e Mobile com foco em construir aplicações robustas, escaláveis e centradas no utilizador. A minha jornada começou na informática e evoluiu para um domínio abrangente do ecossistema JavaScript moderno.
+        </p>
+        <p>
+          Com experiência sólida em React Native para o lado mobile, Node.js e NestJS para o backend, e Next.js para o frontend, consigo acompanhar todo o ciclo de vida de uma aplicação — da ideia à produção.
+        </p>
+        <p>
+          Sou orientado para resultados, colaborativo por natureza, e tenho facilidade de adaptação a novas tecnologias e desafios. Acredito que bom código não é apenas funcional — é legível, sustentável e pensado para o futuro.
+        </p>
+        <p>📧 <a href="mailto:davidgunza5@gmail.com" style="color:var(--blue)">davidgunza5@gmail.com</a> &nbsp;·&nbsp; 📍 Luanda, Angola</p>
+      </div>
+      <div class="about-highlights reveal" style="transition-delay:0.15s">
+        <div class="highlight-card">
+          <div class="highlight-icon"><i class="fas fa-mobile-screen"></i></div>
+          <div class="highlight-info">
+            <h4>Mobile com React Native</h4>
+            <p>Apps iOS e Android com Expo, TypeScript e integrações avançadas de mapas e pagamentos.</p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon"><i class="fas fa-server"></i></div>
+          <div class="highlight-info">
+            <h4>Backend Escalável</h4>
+            <p>APIs REST com Node.js, Express e NestJS. Autenticação JWT, PostgreSQL e MongoDB.</p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon"><i class="fas fa-globe"></i></div>
+          <div class="highlight-info">
+            <h4>Frontend Moderno</h4>
+            <p>Interfaces com Next.js, React.js e TypeScript. Componentes reutilizáveis e UX focada.</p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon"><i class="fas fa-database"></i></div>
+          <div class="highlight-info">
+            <h4>Bases de Dados & DevOps</h4>
+            <p>PostgreSQL, MongoDB, Firebase, Supabase, Prisma ORM e Docker básico.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <br>
-  <h1 class="credit">Todos os direitos reservados <i class="fa fa-heart pulse"></i> a GunzaLab</a></h1>
-
 </section>
-<a href="#home" aria-label="ScrollTop" class="fas fa-angle-up" id="scroll-top"></a>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.5/typed.min.js" integrity="sha512-1KbKusm/hAtkX5FScVR5G36wodIMnVd/aP04af06iyQTkD17szAMGNmxfNH+tEuFp3Og/P5G32L1qEC47CZbUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="./assets/js/particles.min.js"></script>
-<script src="./assets/js/app.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js" integrity="sha512-SttpKhJqONuBVxbRcuH0wezjuX+BoFoli0yPsnrAADcHsQMW8rkR84ItFHGIkPvhnlRnE2FaifDOUw+EltbuHg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://unpkg.com/scrollreveal"></script>
-<script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"
-    ></script>
-<script src="./assets/js/script.js"></script>
 
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="skills-header reveal">
+      <p class="section-label">// tecnologias</p>
+      <h2 class="section-title">Minhas <span>Habilidades</span></h2>
+    </div>
+    <div class="skill-categories">
+
+      <div class="reveal">
+        <h3><i class="fas fa-mobile-screen" style="color:var(--cyan);margin-right:6px;font-size:0.9rem"></i> Mobile</h3>
+        <div class="skills-grid">
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React Native"/>
+            React Native
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg" alt="State"/>
+            Gestão de Estado
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/expo/expo-original.svg" alt="Expo" style="filter:invert(1)"/>
+            Expo
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google Maps"/>
+            Google Maps
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.1s">
+        <h3><i class="fas fa-globe" style="color:var(--cyan);margin-right:6px;font-size:0.9rem"></i> Frontend</h3>
+        <div class="skills-grid">
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React"/>
+            React.js
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:invert(1)"/>
+            Next.js
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript"/>
+            JavaScript
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"/>
+            TypeScript
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.2s">
+        <h3><i class="fas fa-server" style="color:var(--cyan);margin-right:6px;font-size:0.9rem"></i> Backend</h3>
+        <div class="skills-grid">
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js"/>
+            Node.js
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express" style="filter:invert(1)"/>
+            Express.js
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-original.svg" alt="NestJS"/>
+            NestJS
+          </div>
+          <div class="skill-pill">
+            <svg class="sk-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="24" height="24" rx="4" fill="#000"/>
+              <path d="M12 2L4 6v6c0 5.25 3.4 10.15 8 11.35C16.6 22.15 20 17.25 20 12V6L12 2z" fill="#4F8EF7" opacity="0.9"/>
+              <path d="M10 11l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            JWT / Auth
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" alt="Postman"/>
+            APIs REST
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.3s">
+        <h3><i class="fas fa-database" style="color:var(--cyan);margin-right:6px;font-size:0.9rem"></i> Bases de Dados & Infra</h3>
+        <div class="skills-grid">
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"/>
+            PostgreSQL
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB"/>
+            MongoDB
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase"/>
+            Firebase
+          </div>
+          <div class="skill-pill">
+            <svg class="sk-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21.362 9.354H12V.396a.396.396 0 0 0-.716-.233L2.203 12.424l-.401.562a1.04 1.04 0 0 0 .836 1.659H12v8.959a.396.396 0 0 0 .716.233l9.081-12.261.401-.562a1.04 1.04 0 0 0-.836-1.66z" fill="#3ECF8E"/>
+            </svg>
+            Supabase
+          </div>
+          <div class="skill-pill">
+            <svg class="sk-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 12C0 5.373 5.373 0 12 0c4.873 0 9.081 2.905 11.073 7.116L5.116 23.073A11.956 11.956 0 0 1 0 12zm24 0c0 6.627-5.373 12-12 12a11.956 11.956 0 0 1-6.957-2.213L23.787 5.043A11.952 11.952 0 0 1 24 12z" fill="#2D3748"/>
+              <path d="M0 12C0 5.373 5.373 0 12 0c4.873 0 9.081 2.905 11.073 7.116L5.116 23.073A11.956 11.956 0 0 1 0 12z" fill="#5A67D8"/>
+              <path d="M24 12c0 6.627-5.373 12-12 12a11.956 11.956 0 0 1-6.957-2.213L23.787 5.043A11.952 11.952 0 0 1 24 12z" fill="#4299E1"/>
+            </svg>
+            Prisma ORM
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker"/>
+            Docker
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"/>
+            Git + GitHub
+          </div>
+          <div class="skill-pill">
+            <img class="sk-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" alt="Postman"/>
+            Postman
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label">// portfólio</p>
+    <h2 class="section-title">Projetos <span>Concluídos</span></h2>
+    <p class="section-desc">Aplicações reais desenvolvidas com foco em performance, escalabilidade e experiência do utilizador.</p>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <div class="project-icon" style="background:rgba(34,197,94,0.1)">💊</div>
+          <div class="project-links">
+            <a href="#" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">Express Farma</h3>
+          <p class="project-desc">E-commerce farmacêutico 100% funcional que opera como uma farmácia online completa — catálogo de medicamentos, carrinho de compras, gestão de pedidos e pagamentos integrados. Experiência fluida tanto para clientes como para administradores da farmácia.</p>
+          <div class="project-tags">
+            <span class="tag">MongoDB</span>
+            <span class="tag">Express</span>
+            <span class="tag">React</span>
+            <span class="tag">Node.js</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal" style="transition-delay:0.1s">
+        <div class="project-header">
+          <div class="project-icon" style="background:rgba(79,142,247,0.1)">🛒</div>
+          <div class="project-links">
+            <a href="#" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">MarketAo</h3>
+          <p class="project-desc">Marketplace angolano com as principais funcionalidades de uma plataforma de comércio multivendedor: gestão de lojas, produtos, pagamentos via Stripe, sistema de avaliações e painel administrativo completo.</p>
+          <div class="project-tags">
+            <span class="tag">NestJS</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Stripe</span>
+            <span class="tag">Node.js</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal" style="transition-delay:0.2s">
+        <div class="project-header">
+          <div class="project-icon" style="background:rgba(239,68,68,0.1)">🚔</div>
+          <div class="project-links">
+            <a href="#" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">App de Denúncias – PN</h3>
+          <p class="project-desc">Aplicação mobile para a Polícia Nacional de Angola que permite aos cidadãos reportar ocorrências de forma anónima e segura, com upload de evidências, geolocalização automática da denúncia e acompanhamento do status em tempo real.</p>
+          <div class="project-tags">
+            <span class="tag">React Native</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Firebase</span>
+            <span class="tag">Supabase</span>
+            <span class="tag">Expo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal" style="transition-delay:0.1s">
+        <div class="project-header">
+          <div class="project-icon" style="background:rgba(168,85,247,0.1)">🏠</div>
+          <div class="project-links">
+            <a href="#" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">App de Aluguel de Quartos</h3>
+          <p class="project-desc">Plataforma mobile de aluguel informal de quartos em Angola, conectando proprietários e inquilinos. Inclui listagem de imóveis com galeria de fotos, localização via Google Maps, filtros avançados e sistema de contacto direto.</p>
+          <div class="project-tags">
+            <span class="tag">React Native</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Google Maps</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal" style="transition-delay:0.2s">
+        <div class="project-header">
+          <div class="project-icon" style="background:rgba(251,146,60,0.1)">🛵</div>
+          <div class="project-links">
+            <a href="#" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3 class="project-title">App de Delivery por Demanda</h3>
+          <p class="project-desc">Aplicação de delivery on-demand que conecta clientes, restaurantes e entregadores em tempo real. Rastreamento ao vivo via Google Maps, notificações push, pagamento integrado com Stripe e gestão completa de pedidos por etapas.</p>
+          <div class="project-tags">
+            <span class="tag">React Native</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Google Maps</span>
+            <span class="tag">Stripe</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <p class="section-label">// formação</p>
+    <h2 class="section-title">Minha <span>Educação</span></h2>
+    <div class="edu-timeline">
+      <div class="edu-item reveal">
+        <div class="edu-dot"></div>
+        <div class="edu-card">
+          <div class="edu-period">2023 – Presente</div>
+          <div class="edu-institution">Universidade Metodista de Angola – UMA</div>
+          <div class="edu-course">Licenciatura em Engenharia Informática · Em curso</div>
+        </div>
+      </div>
+      <div class="edu-item reveal" style="transition-delay:0.15s">
+        <div class="edu-dot" style="background:var(--purple); box-shadow:0 0 10px var(--purple)"></div>
+        <div class="edu-card">
+          <div class="edu-period">2019 – 2023</div>
+          <div class="edu-institution">Instituto de Telecomunicações – ITEL</div>
+          <div class="edu-course">Ensino Médio em Informática · Concluído</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOALS -->
+<section id="goals">
+  <div class="container">
+    <p class="section-label">// 2025 – 2026</p>
+    <h2 class="section-title">Minhas <span>Metas</span></h2>
+    <p class="section-desc">Objetivos profissionais e pessoais que estou a perseguir este ano.</p>
+    <div class="goals-grid">
+      <div class="goals-col reveal">
+        <h3>🎯 Metas Profissionais</h3>
+        <div class="goal-list">
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Aprender uma nova tecnologia (DevOps / Cloud AWS)</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Publicar 2 projetos open source no GitHub</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Lançar um produto SaaS próprio</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Conseguir a primeira oportunidade internacional (remoto)</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Obter uma certificação técnica (AWS ou Google Cloud)</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Contribuir para projetos open source relevantes</span>
+          </div>
+        </div>
+      </div>
+      <div class="goals-col reveal" style="transition-delay:0.15s">
+        <h3>🌱 Metas Pessoais</h3>
+        <div class="goal-list">
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Melhorar o inglês (nível B2 ou superior)</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Aprender um pouco de espanhol (nível básico)</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Ler 10 livros de tecnologia e desenvolvimento pessoal</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check todo"><i class="fas fa-xmark"></i></div>
+            <span class="goal-text">Criar um blog técnico e publicar artigos regularmente</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check done"><i class="fas fa-check"></i></div>
+            <span class="goal-text done">Concluir o Ensino Médio em Informática</span>
+          </div>
+          <div class="goal-item">
+            <div class="goal-check done"><i class="fas fa-check"></i></div>
+            <span class="goal-text done">Lançar o primeiro projeto fullstack em produção</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label">// vamos conversar</p>
+    <h2 class="section-title">Entre em <span>Contacto</span></h2>
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <a href="mailto:davidgunza5@gmail.com" class="contact-card">
+          <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
+          <div class="contact-card-info">
+            <label>Email</label>
+            <p>davidgunza5@gmail.com</p>
+          </div>
+        </a>
+        <a href="https://wa.me/244944067925" class="contact-card" target="_blank">
+          <div class="contact-card-icon" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.2);color:#25d366">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <div class="contact-card-info">
+            <label>WhatsApp</label>
+            <p>+244 944 067 925</p>
+          </div>
+        </a>
+        <a href="https://github.com/davidgunzo05" class="contact-card" target="_blank">
+          <div class="contact-card-icon" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);color:#fff">
+            <i class="fab fa-github"></i>
+          </div>
+          <div class="contact-card-info">
+            <label>GitHub</label>
+            <p>github.com/davidgunzo05</p>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/david-gunza" class="contact-card" target="_blank">
+          <div class="contact-card-icon" style="background:rgba(10,102,194,0.1);border-color:rgba(10,102,194,0.3);color:#0a66c2">
+            <i class="fab fa-linkedin-in"></i>
+          </div>
+          <div class="contact-card-info">
+            <label>LinkedIn</label>
+            <p>linkedin.com/in/david-gunza</p>
+          </div>
+        </a>
+        <a href="https://facebook.com/david.gunza" class="contact-card" target="_blank">
+          <div class="contact-card-icon" style="background:rgba(24,119,242,0.1);border-color:rgba(24,119,242,0.3);color:#1877f2">
+            <i class="fab fa-facebook-f"></i>
+          </div>
+          <div class="contact-card-info">
+            <label>Facebook</label>
+            <p>David Gunza</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="contact-cta-box reveal" style="transition-delay:0.15s" id="cv-download">
+        <h3>Pronto para trabalhar juntos?</h3>
+        <p>Estou disponível para projetos freelance, oportunidades de emprego e colaborações. Vamos construir algo incrível!</p>
+        <a href="assets/Currículo - David Gunza.pdf" class="btn-primary" id="download-cv-btn" style="width:fit-content">
+          <i class="fas fa-file-arrow-down"></i> Baixar Currículo (PDF)
+        </a>
+        <p style="margin-top:1rem; font-size:0.78rem; color:var(--muted);">
+          📍 Luanda, Angola &nbsp;·&nbsp; Disponível para trabalho remoto
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-copy">© 2025 David Gunza. Todos os direitos reservados.</p>
+  <p class="footer-mono">Feito com ❤️ em Luanda, Angola</p>
+</footer>
+
+<script>
+/* ── PARTICLES CANVAS ── */
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+for (let i = 0; i < 70; i++) {
+  particles.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.5 + 0.3,
+    dx: (Math.random() - 0.5) * 0.3,
+    dy: (Math.random() - 0.5) * 0.3,
+    opacity: Math.random() * 0.5 + 0.1,
+  });
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(79,142,247,${p.opacity})`;
+    ctx.fill();
+    p.x += p.dx; p.y += p.dy;
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+  });
+
+  // Connect nearby particles
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i+1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(79,142,247,${0.08 * (1 - dist/120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ── TYPEWRITER ── */
+const roles = [
+  'Fullstack Developer',
+  'React Native Dev',
+  'Node.js Developer',
+  'Mobile App Builder',
+  'Backend Engineer',
+];
+let ri = 0, ci = 0, deleting = false;
+const typedEl = document.getElementById('typed');
+function type() {
+  const word = roles[ri];
+  if (!deleting) {
+    typedEl.textContent = word.slice(0, ++ci);
+    if (ci === word.length) { deleting = true; return setTimeout(type, 1800); }
+  } else {
+    typedEl.textContent = word.slice(0, --ci);
+    if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+  }
+  setTimeout(type, deleting ? 55 : 90);
+}
+type();
+
+/* ── SCROLL REVEAL ── */
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+reveals.forEach(r => obs.observe(r));
+</script>
 </body>
 </html>
